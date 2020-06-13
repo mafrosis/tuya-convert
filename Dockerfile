@@ -4,10 +4,13 @@ RUN apt-get update && apt-get install -y sudo iproute2 iputils-ping
 
 RUN echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
 
-COPY docker/bin /usr/bin/
+WORKDIR /tuya-convert
 
-COPY . /usr/bin/tuya-convert
+# Install dependencies
+COPY install_prereq.sh .
+RUN ./install_prereq.sh
 
-RUN cd /usr/bin/tuya-convert && ./install_prereq.sh
+# Copy all source files into the docker image
+COPY . .
 
-RUN mkdir -p /etc/service/tuya && cd /etc/service/tuya && ln -s /usr/bin/config.sh run
+CMD ["/tuya-convert/docker/bin/config.sh"]

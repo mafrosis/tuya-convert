@@ -1,4 +1,9 @@
 #!/bin/bash
-echo WLAN=$WLAN >/usr/bin/tuya-convert/config.txt
-echo AP=$AP >>/usr/bin/tuya-convert/config.txt
-echo GATEWAY=$GATEWAY >>/usr/bin/tuya-convert/config.txt
+
+tee /tuya-convert/config.txt > /dev/null <<EOF
+WLAN=$WLAN
+AP=$AP
+GATEWAY=$GATEWAY
+EOF
+
+/tuya-convert/start_flash.sh
